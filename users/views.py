@@ -3,6 +3,11 @@ from drf_yasg.utils import swagger_auto_schema
 from django.utils.decorators import method_decorator
 from rest_framework.views import APIView
 from social_django.models import UserSocialAuth
+from rest_framework.permissions import IsAuthenticated
+from oauth2_provider.contrib.rest_framework import OAuth2Authentication
+from drf_social_oauth2.authentication import SocialAuthentication
+from rest_framework.parsers import FormParser, MultiPartParser
+from .serializers import UserProfileSerializer
 from .models import User
 from EStoreBackend.utils import send_response
 from drf_social_oauth2.views import TokenView, ConvertTokenView
@@ -47,6 +52,33 @@ class UserView(APIView):
                     return send_response(result=False, message="User with this email already exists")
             else:
                 return send_response(result=False, message="Empty Fields")
+        except Exception as e:
+            return send_response(result=False, message=str(e))
+
+# USER DETAILS
+
+@method_decorator(name='patch', decorator=swagger_auto_schema(
+    operation_description="Save User Details",
+    tags=["User Details"],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+    )
+))
+class ProfilePicView(APIView):
+
+    permission_classes=[IsAuthenticated]
+    authentication_classes=[OAuth2Authentication,SocialAuthentication]
+    parser_classes=[FormParser,MultiPartParser]
+
+    def patch(self,request):
+        try:
+            user=User.objects.get(pk=request.user.pk)
+            userProfile=UserProfileSerializer(user,data=request.data)
+            if userProfile.is_valid():
+                userProfile.save()
+                return send_response(result=True,message="Profile Picture updated successfully")
+            else:
+                return send_response(result=False,message="Something went wrong! Try again")
         except Exception as e:
             return send_response(result=False, message=str(e))
             
