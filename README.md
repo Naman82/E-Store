@@ -1,7 +1,6 @@
 # E-Store
 <br>
 <h2> Database Structure </h2>
-<hr>
  <em>reference link</em> : https://dbdiagram.io/embed/63a71ea77d39e42284e75c8c
 <br>
 <br>
@@ -11,5 +10,4 @@
 <br>
 
 <h2> Architecture Desgin </h2>
-<hr>
  <em> reference link </em> : 
