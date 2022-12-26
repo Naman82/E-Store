@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from oauth2_provider.contrib.rest_framework import OAuth2Authentication
 from drf_social_oauth2.authentication import SocialAuthentication
 from rest_framework.parsers import FormParser, MultiPartParser
-from .serializers import UserProfileSerializer
+from .serializers import UserProfileSerializer,CustomerSerializer,SellerSerializer
 from .models import User
 from EStoreBackend.utils import send_response
 from drf_social_oauth2.views import TokenView, ConvertTokenView
@@ -82,8 +82,38 @@ class ProfilePicView(APIView):
         except Exception as e:
             return send_response(result=False, message=str(e))
             
+class CustomerProfileView(APIView):
+    permission_classes=[IsAuthenticated]
+    authentication_classes=[OAuth2Authentication,SocialAuthentication]
+
+    def post(self,request):
+        try:
+            serializer=CustomerSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return send_response(result=True,message="Customer Profile saved successfully")
+            else:
+                return send_response(result=False,message="Invalid request")
+        except Exception as e:
+            return send_response(result=False, message=str(e))
+            
+class SellerProfileView(APIView):
+    permission_classes=[IsAuthenticated]
+    authentication_classes=[OAuth2Authentication,SocialAuthentication]
+
+    def post(self,request):
+        try:
+            serializer=SellerSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return send_response(result=True,message="Seller Profile saved successfully")
+            else:
+                return send_response(result=False,message="Invalid request")
+        except Exception as e:
+            return send_response(result=False, message=str(e))
 
 # AUTHENTICATION EXTENDED VIEWS
+
 @method_decorator(name="post", decorator=swagger_auto_schema(
      operation_description="Test for login",
     tags=["User Authentication"],
