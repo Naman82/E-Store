@@ -7,8 +7,8 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(CustomerProfile)
 class CustomerProfileAdmin(admin.ModelAdmin):
-    list_display = ("user")
+    list_display = ("user","created_at")
 
 @admin.register(SellerProfile)
 class SellerProfileAdmin(admin.ModelAdmin):
-    list_display = ("user")
+    list_display = ("user","created_at")

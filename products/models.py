@@ -23,7 +23,7 @@ class Inventory(models.Model):
 class Discount(models.Model):
     name = models.CharField(null=True,max_length=255)
     desc = models.TextField()
-    discount_perct = models.DecimalField()
+    discount_perct = models.DecimalField(max_digits=10,decimal_places=2)
     is_active = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -39,7 +39,7 @@ class Product(models.Model):
     description = models.TextField(null=True,blank=True)
     product_image = models.ImageField(upload_to=get_update_filename, default='uploads/product/default_profile.jpg')
     sku = models.CharField(null=True,max_length=255)
-    price = models.DecimalField()
+    price = models.DecimalField(max_digits=10,decimal_places=2)
     category_id = models.ForeignKey(Category,on_delete=models.CASCADE)
     inventory_id = models.ForeignKey(Inventory,on_delete=models.CASCADE)
     discount_id = models.ForeignKey(Discount,on_delete=models.CASCADE)
