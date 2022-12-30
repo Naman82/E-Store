@@ -1,3 +1,6 @@
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+from django.utils.decorators import method_decorator
 from django.shortcuts import render
 from rest_framework.views import APIView
 from users.permissions import SellerUserPermission
@@ -60,7 +63,6 @@ class ProductView(APIView):
         except Exception as e:
             return send_response(result=False,message=str(e))
 
-
 class CategoryView(APIView):
     permission_classes=[IsAuthenticated]
     authentication_classes=[SocialAuthentication,OAuth2Authentication]
@@ -84,6 +86,16 @@ class CategoryView(APIView):
         except Exception as e:
             return send_response(result=False, message=str(e))
 
+@method_decorator(name='post', decorator=swagger_auto_schema(
+    operation_description="Save Product Details",
+    tags=["Product"],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'qunatity':openapi.Schema(type=openapi.TYPE_INTEGER),
+        }
+    )
+))
 class InventoryView(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [SocialAuthentication,OAuth2Authentication]
@@ -99,6 +111,19 @@ class InventoryView(APIView):
         except Exception as e:
             return send_response(result=False,message=str(e))
 
+@method_decorator(name='post', decorator=swagger_auto_schema(
+    operation_description="Save Product Details",
+    tags=["Product"],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'name':openapi.Schema(type=openapi.TYPE_STRING),
+            'desc':openapi.Schema(type=openapi.TYPE_STRING),
+            'discount_perct':openapi.Schema(type=openapi.TYPE_INTEGER,description="decimal value"),
+            'is_active':openapi.Schema(type=openapi.TYPE_BOOLEAN)
+        }
+    )
+))
 class DiscountView(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [SocialAuthentication,OAuth2Authentication]

@@ -57,13 +57,7 @@ class UserView(APIView):
 
 # USER DETAILS
 
-@method_decorator(name='patch', decorator=swagger_auto_schema(
-    operation_description="Save User Details",
-    tags=["User Details"],
-    request_body=openapi.Schema(
-        type=openapi.TYPE_OBJECT,
-    )
-))
+
 class ProfilePicView(APIView):
 
     permission_classes=[IsAuthenticated]
@@ -81,7 +75,23 @@ class ProfilePicView(APIView):
                 return send_response(result=False,message="Something went wrong! Try again")
         except Exception as e:
             return send_response(result=False, message=str(e))
-            
+
+@method_decorator(name='post', decorator=swagger_auto_schema(
+    operation_description="Save User Details",
+    tags=["User Details"],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'country':openapi.Schema(type=openapi.TYPE_STRING),
+            'state':openapi.Schema(type=openapi.TYPE_STRING),
+            'city':openapi.Schema(type=openapi.TYPE_STRING),
+            'gender':openapi.Schema(type=openapi.TYPE_INTEGER,description="0 for Male, 1 for Female, 2 for Other"),
+            'pincode':openapi.Schema(type=openapi.TYPE_INTEGER),
+            'address':openapi.Schema(type=openapi.TYPE_STRING),
+            'age':openapi.Schema(type=openapi.TYPE_STRING),
+        }
+    )
+))          
 class CustomerProfileView(APIView):
     permission_classes=[IsAuthenticated]
     authentication_classes=[OAuth2Authentication,SocialAuthentication]
@@ -96,7 +106,26 @@ class CustomerProfileView(APIView):
                 return send_response(result=False,message="Invalid request")
         except Exception as e:
             return send_response(result=False, message=str(e))
-            
+
+@method_decorator(name='post', decorator=swagger_auto_schema(
+    operation_description="Save User Details",
+    tags=["User Details"],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'country':openapi.Schema(type=openapi.TYPE_STRING),
+            'state':openapi.Schema(type=openapi.TYPE_STRING),
+            'city':openapi.Schema(type=openapi.TYPE_STRING),
+            'gender':openapi.Schema(type=openapi.TYPE_INTEGER,description="0 for Male, 1 for Female, 2 for Other"),
+            'pincode':openapi.Schema(type=openapi.TYPE_INTEGER),
+            'address':openapi.Schema(type=openapi.TYPE_STRING),
+            'age':openapi.Schema(type=openapi.TYPE_STRING),
+            'is_business':openapi.Schema(type=openapi.TYPE_BOOLEAN),
+            'business_website':openapi.Schema(type=openapi.TYPE_STRING),
+            'business_name':openapi.Schema(type=openapi.TYPE_STRING),
+        }
+    )
+))            
 class SellerProfileView(APIView):
     permission_classes=[IsAuthenticated]
     authentication_classes=[OAuth2Authentication,SocialAuthentication]
